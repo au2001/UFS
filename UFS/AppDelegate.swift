@@ -13,6 +13,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var menu: NSMenu!
     private var statusItem: NSStatusItem?
+    
+    private lazy var desktopPath = (NSSearchPathForDirectoriesInDomains(.desktopDirectory, .userDomainMask, true) as [String]).first!
+    private lazy var ufs: UFS = {
+        return UFS(rootPath: self.desktopPath)
+    }()
+    private lazy var userFileSystem: GMUserFileSystem = {
+        return GMUserFileSystem(delegate: self.ufs, isThreadSafe: false)
+    }()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -22,6 +30,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.statusItem?.button?.image = NSImage(named: "MenuIcon");
         self.statusItem?.button?.imageScaling = NSImageScaling.scaleProportionallyDown;
         self.statusItem?.button?.toolTip = "UFS";
+        
+        var options: [String] = ["allow_other", "volname=UFS"]
+        
+        if let volumeIconPath = Bundle.main.path(forResource: "volicon", ofType: "icns") {
+            options.insert("volicon=\(volumeIconPath)", at: 0)
+        }
+
+        userFileSystem.mount(atPath: "/Volumes/ufs", withOptions: options)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D0FF6B2230C4A8300877A78 /* OSXFUSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0FF6AD230C49B000877A78 /* OSXFUSE.framework */; };
+		0D0FF6B4230C4AF900877A78 /* UFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B3230C4AF900877A78 /* UFS.swift */; };
+		0D0FF6B6230C4B3000877A78 /* NSError+POSIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */; };
+		0D0FF6BD230C4F4200877A78 /* volicon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 0D0FF6BC230C4F4200877A78 /* volicon.icns */; };
 		0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */; };
 		0DB0EB71230C348300E81FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DB0EB70230C348300E81FC8 /* Assets.xcassets */; };
 		0DB0EB74230C348300E81FC8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DB0EB72230C348300E81FC8 /* MainMenu.xib */; };
@@ -14,6 +18,10 @@
 
 /* Begin PBXFileReference section */
 		0D0FF6AD230C49B000877A78 /* OSXFUSE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSXFUSE.framework; path = ../../../../../Library/Frameworks/OSXFUSE.framework; sourceTree = "<group>"; };
+		0D0FF6AF230C4A5D00877A78 /* UFS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UFS-Bridging-Header.h"; sourceTree = "<group>"; };
+		0D0FF6B3230C4AF900877A78 /* UFS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UFS.swift; sourceTree = "<group>"; };
+		0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+POSIX.swift"; sourceTree = "<group>"; };
+		0D0FF6BC230C4F4200877A78 /* volicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = volicon.icns; path = UFS/volicon.icns; sourceTree = SOURCE_ROOT; };
 		0DB0EB68230C348300E81FC8 /* UFS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UFS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DB0EB70230C348300E81FC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -27,12 +35,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0FF6B2230C4A8300877A78 /* OSXFUSE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D0FF6BE230C4F5400877A78 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0DB0EB70230C348300E81FC8 /* Assets.xcassets */,
+				0DB0EB72230C348300E81FC8 /* MainMenu.xib */,
+				0DB0EB75230C348300E81FC8 /* Info.plist */,
+				0DB0EB76230C348300E81FC8 /* UFS.entitlements */,
+				0D0FF6AF230C4A5D00877A78 /* UFS-Bridging-Header.h */,
+				0D0FF6C0230C4F6200877A78 /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		0D0FF6C0230C4F6200877A78 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				0D0FF6BC230C4F4200877A78 /* volicon.icns */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		0DB0EB5F230C348300E81FC8 = {
 			isa = PBXGroup;
 			children = (
@@ -54,10 +84,9 @@
 			isa = PBXGroup;
 			children = (
 				0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */,
-				0DB0EB70230C348300E81FC8 /* Assets.xcassets */,
-				0DB0EB72230C348300E81FC8 /* MainMenu.xib */,
-				0DB0EB75230C348300E81FC8 /* Info.plist */,
-				0DB0EB76230C348300E81FC8 /* UFS.entitlements */,
+				0D0FF6B3230C4AF900877A78 /* UFS.swift */,
+				0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */,
+				0D0FF6BE230C4F5400877A78 /* Resources */,
 			);
 			path = UFS;
 			sourceTree = "<group>";
@@ -102,6 +131,7 @@
 				TargetAttributes = {
 					0DB0EB67230C348300E81FC8 = {
 						CreatedOnToolsVersion = 10.3;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -130,6 +160,7 @@
 			files = (
 				0DB0EB71230C348300E81FC8 /* Assets.xcassets in Resources */,
 				0DB0EB74230C348300E81FC8 /* MainMenu.xib in Resources */,
+				0D0FF6BD230C4F4200877A78 /* volicon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +171,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0FF6B4230C4AF900877A78 /* UFS.swift in Sources */,
+				0D0FF6B6230C4B3000877A78 /* NSError+POSIX.swift in Sources */,
 				0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,6 +310,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = UFS/UFS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -292,6 +326,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.justkodding.UFS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UFS/UFS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -300,6 +336,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = UFS/UFS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -315,6 +352,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.justkodding.UFS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UFS/UFS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
