@@ -1,0 +1,13 @@
+<svg viewBox="0 0 1390 1204" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Red -->
+	<path d="m242 1204 242-419h906l-242 419z" fill="#999" />
+	<path d="m695 785h-211l105-183-347 602z" fill="#000" opacity="0.3" />
+
+	<!-- Green -->
+	<path d="m1390 785h-484l-453-785h484z" fill="#999" />
+	<path d="m906 785h484l-589-183z" fill="#000" opacity="0.3" />
+
+	<!-- Blue -->
+	<path d="m242 1204-242-419 453-785 242 419z" fill="#999" />
+	<path d="m589 602 106-183-242-419z" fill="#000" opacity="0.3" />
+</svg>

@@ -8,15 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */; };
-		0DB0EB6F230C348300E81FC8 /* UFS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0DB0EB6D230C348300E81FC8 /* UFS.xcdatamodeld */; };
 		0DB0EB71230C348300E81FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DB0EB70230C348300E81FC8 /* Assets.xcassets */; };
 		0DB0EB74230C348300E81FC8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DB0EB72230C348300E81FC8 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D0FF6AD230C49B000877A78 /* OSXFUSE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSXFUSE.framework; path = ../../../../../Library/Frameworks/OSXFUSE.framework; sourceTree = "<group>"; };
 		0DB0EB68230C348300E81FC8 /* UFS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UFS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0DB0EB6E230C348300E81FC8 /* UFS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UFS.xcdatamodel; sourceTree = "<group>"; };
 		0DB0EB70230C348300E81FC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0DB0EB73230C348300E81FC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		0DB0EB75230C348300E81FC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -39,6 +38,7 @@
 			children = (
 				0DB0EB6A230C348300E81FC8 /* UFS */,
 				0DB0EB69230C348300E81FC8 /* Products */,
+				0DB0EB7C230C48EE00E81FC8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,9 +58,16 @@
 				0DB0EB72230C348300E81FC8 /* MainMenu.xib */,
 				0DB0EB75230C348300E81FC8 /* Info.plist */,
 				0DB0EB76230C348300E81FC8 /* UFS.entitlements */,
-				0DB0EB6D230C348300E81FC8 /* UFS.xcdatamodeld */,
 			);
 			path = UFS;
+			sourceTree = "<group>";
+		};
+		0DB0EB7C230C48EE00E81FC8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D0FF6AD230C49B000877A78 /* OSXFUSE.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,7 +140,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DB0EB6F230C348300E81FC8 /* UFS.xcdatamodeld in Sources */,
 				0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,7 +280,11 @@
 				CODE_SIGN_ENTITLEMENTS = UFS/UFS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = PMAFYLZE9F;
+				DEVELOPMENT_TEAM = 9J75238463;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = UFS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -293,7 +303,11 @@
 				CODE_SIGN_ENTITLEMENTS = UFS/UFS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = PMAFYLZE9F;
+				DEVELOPMENT_TEAM = 9J75238463;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = UFS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -327,19 +341,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		0DB0EB6D230C348300E81FC8 /* UFS.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				0DB0EB6E230C348300E81FC8 /* UFS.xcdatamodel */,
-			);
-			currentVersion = 0DB0EB6E230C348300E81FC8 /* UFS.xcdatamodel */;
-			path = UFS.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 0DB0EB60230C348300E81FC8 /* Project object */;
 }
