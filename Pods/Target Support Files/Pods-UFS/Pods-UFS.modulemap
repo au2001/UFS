@@ -1,0 +1,6 @@
+framework module Pods_UFS {
+  umbrella header "Pods-UFS-umbrella.h"
+
+  export *
+  module * { export * }
+}
