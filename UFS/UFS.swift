@@ -18,8 +18,8 @@ final class UFS: NSObject {
     
     // MARK: - Moving an Item
     override func moveItem(atPath source: String!, toPath destination: String!) throws {
-        let sourcePath = (rootPath.appending(source) as NSString).utf8String!
-        let destinationPath = (rootPath.appending(destination) as NSString).utf8String!
+        let sourcePath = (self.rootPath.appending(source) as NSString).utf8String!
+        let destinationPath = (self.rootPath.appending(destination) as NSString).utf8String!
         
         let returnValue = rename(sourcePath, destinationPath)
         if returnValue < 0 {
@@ -31,7 +31,7 @@ final class UFS: NSObject {
     override func removeDirectory(atPath path: String!) throws {
         // We need to special-case directories here and use the bsd API since
         // NSFileManager will happily do a recursive remove :-(
-        let originalPath = (rootPath.appending(path) as NSString).utf8String!
+        let originalPath = (self.rootPath.appending(path) as NSString).utf8String!
         
         let returnValue = rmdir(originalPath)
         if returnValue < 0 {
@@ -40,7 +40,7 @@ final class UFS: NSObject {
     }
     
     override func removeItem(atPath path: String!) throws {
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         
         return try FileManager.default.removeItem(atPath: originalPath)
     }
@@ -49,7 +49,7 @@ final class UFS: NSObject {
     override func createDirectory(atPath path: String!, attributes: [AnyHashable : Any]! = [:]) throws {
         guard let attributes = attributes as? [FileAttributeKey: Any] else { throw NSError(posixErrorCode: EPERM) }
         
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         
         try FileManager.default.createDirectory(atPath: originalPath, withIntermediateDirectories: false, attributes: attributes)
     }
@@ -60,7 +60,7 @@ final class UFS: NSObject {
             throw NSError(posixErrorCode: EPERM)
         }
         
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         
         let fileDescriptor = open((originalPath as NSString).utf8String!, flags, mode)
         
@@ -73,8 +73,8 @@ final class UFS: NSObject {
     
     // MARK: - Linking an Item
     override func linkItem(atPath path: String!, toPath otherPath: String!) throws {
-        let originalPath = (rootPath.appending(path) as NSString).utf8String!
-        let originalOtherPath = (rootPath.appending(otherPath) as NSString).utf8String!
+        let originalPath = (self.rootPath.appending(path) as NSString).utf8String!
+        let originalOtherPath = (self.rootPath.appending(otherPath) as NSString).utf8String!
         
         // We use link rather than the NSFileManager equivalent because it will copy
         // the file rather than hard link if part of the root path is a symlink.
@@ -85,18 +85,18 @@ final class UFS: NSObject {
     
     // MARK: - Symbolic Links
     override func createSymbolicLink(atPath path: String!, withDestinationPath otherPath: String!) throws {
-        let sourcePath = rootPath.appending(path)
+        let sourcePath = self.rootPath.appending(path)
         try FileManager.default.createSymbolicLink(atPath: sourcePath, withDestinationPath: otherPath)
     }
     
     override func destinationOfSymbolicLink(atPath path: String!) throws -> String {
-        let sourcePath = rootPath.appending(path)
+        let sourcePath = self.rootPath.appending(path)
         return try FileManager.default.destinationOfSymbolicLink(atPath: sourcePath)
     }
     
     // MARK: - File Contents
     override func openFile(atPath path: String!, mode: Int32, userData: AutoreleasingUnsafeMutablePointer<AnyObject?>!) throws {
-        let originalPath = (rootPath.appending(path) as NSString).utf8String!
+        let originalPath = (self.rootPath.appending(path) as NSString).utf8String!
         
         let fileDescriptor = open(originalPath, mode)
         
@@ -174,8 +174,8 @@ final class UFS: NSObject {
     }
     
     public override func exchangeDataOfItem(atPath path1: String!, withItemAtPath path2: String!) throws {
-        let sourcePath = (rootPath.appending(path1) as NSString).utf8String!
-        let destinationPath = (rootPath.appending(path2) as NSString).utf8String!
+        let sourcePath = (self.rootPath.appending(path1) as NSString).utf8String!
+        let destinationPath = (self.rootPath.appending(path2) as NSString).utf8String!
         
         let returnValue = exchangedata(sourcePath, destinationPath, 0)
         if returnValue < 0 {
@@ -185,18 +185,18 @@ final class UFS: NSObject {
     
     // MARK: - Directory Contents
     override func contentsOfDirectory(atPath path: String!) throws -> [Any] {
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         return try FileManager.default.contentsOfDirectory(atPath: originalPath)
     }
     
     // MARK: - Getting and Setting Attributes
     override func attributesOfItem(atPath path: String!, userData: Any!) throws -> [AnyHashable : Any] {
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         return try FileManager.default.attributesOfItem(atPath: originalPath)
     }
     
     override func attributesOfFileSystem(forPath path: String!) throws -> [AnyHashable : Any] {
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         
         var attributes = try FileManager.default.attributesOfFileSystem(forPath: originalPath)
         attributes[FileAttributeKey(rawValue: kGMUserFileSystemVolumeSupportsExtendedDatesKey)] = true
@@ -212,7 +212,7 @@ final class UFS: NSObject {
     override func setAttributes(_ attributes: [AnyHashable : Any]!, ofItemAtPath path: String!, userData: Any!) throws {
         guard let attribs = attributes as? [FileAttributeKey: Any] else { throw NSError(posixErrorCode: EINVAL) }
         
-        let originalPath = rootPath.appending(path)
+        let originalPath = self.rootPath.appending(path)
         
         if let pathPointer = (originalPath as NSString).utf8String {
             if let offset = attributes[FileAttributeKey.size.rawValue] as? Int64 {
@@ -234,3 +234,4 @@ final class UFS: NSObject {
     }
     
 }
+

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		0D0FF6B4230C4AF900877A78 /* UFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B3230C4AF900877A78 /* UFS.swift */; };
 		0D0FF6B6230C4B3000877A78 /* NSError+POSIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */; };
 		0D0FF6BD230C4F4200877A78 /* volicon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 0D0FF6BC230C4F4200877A78 /* volicon.icns */; };
+		0D197ABB230ECC5B00F3AEDC /* DriveStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D197ABA230ECC5B00F3AEDC /* DriveStorage.swift */; };
 		0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */; };
 		0DB0EB71230C348300E81FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DB0EB70230C348300E81FC8 /* Assets.xcassets */; };
 		0DB0EB74230C348300E81FC8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DB0EB72230C348300E81FC8 /* MainMenu.xib */; };
@@ -23,6 +24,7 @@
 		0D0FF6B3230C4AF900877A78 /* UFS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UFS.swift; sourceTree = "<group>"; };
 		0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+POSIX.swift"; sourceTree = "<group>"; };
 		0D0FF6BC230C4F4200877A78 /* volicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = volicon.icns; path = UFS/volicon.icns; sourceTree = SOURCE_ROOT; };
+		0D197ABA230ECC5B00F3AEDC /* DriveStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveStorage.swift; sourceTree = "<group>"; };
 		0DB0EB68230C348300E81FC8 /* UFS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UFS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DB0EB70230C348300E81FC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */,
 				0D0FF6B3230C4AF900877A78 /* UFS.swift */,
 				0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */,
+				0D197ABA230ECC5B00F3AEDC /* DriveStorage.swift */,
 				0D0FF6BE230C4F5400877A78 /* Resources */,
 			);
 			path = UFS;
@@ -112,7 +115,6 @@
 				64716F14D61D9C09C490773A /* Pods-UFS.debug.xcconfig */,
 				55E0E16EB56FC63B22724055 /* Pods-UFS.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -127,6 +129,7 @@
 				0DB0EB64230C348300E81FC8 /* Sources */,
 				0DB0EB65230C348300E81FC8 /* Frameworks */,
 				0DB0EB66230C348300E81FC8 /* Resources */,
+				2C0B727273049B77E63BBBE6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -207,6 +210,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		2C0B727273049B77E63BBBE6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UFS/Pods-UFS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UFS/Pods-UFS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UFS/Pods-UFS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -214,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D197ABB230ECC5B00F3AEDC /* DriveStorage.swift in Sources */,
 				0D0FF6B4230C4AF900877A78 /* UFS.swift in Sources */,
 				0D0FF6B6230C4B3000877A78 /* NSError+POSIX.swift in Sources */,
 				0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */,

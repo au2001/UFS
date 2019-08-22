@@ -1,3 +1,36 @@
-PODFILE CHECKSUM: dd5d375c155c8e52456c382df192200f7cc119ad
+PODS:
+  - AppAuth (0.95.1)
+  - GoogleAPIClientForREST/Core (1.3.9):
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Docs (1.3.9):
+    - GoogleAPIClientForREST/Core
+    - GTMSessionFetcher (>= 1.1.7)
+  - GTMAppAuth (0.7.1):
+    - AppAuth (~> 0.95)
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.2.2):
+    - GTMSessionFetcher/Full (= 1.2.2)
+  - GTMSessionFetcher/Core (1.2.2)
+  - GTMSessionFetcher/Full (1.2.2):
+    - GTMSessionFetcher/Core (= 1.2.2)
+
+DEPENDENCIES:
+  - GoogleAPIClientForREST/Docs
+  - GTMAppAuth
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AppAuth
+    - GoogleAPIClientForREST
+    - GTMAppAuth
+    - GTMSessionFetcher
+
+SPEC CHECKSUMS:
+  AppAuth: cd34aac431e5c77c46ec7f03935377faa8c5808b
+  GoogleAPIClientForREST: 44c7b678cbab11d26a47eab7309d6179b1a61f0c
+  GTMAppAuth: c5e41aaf039ac1ccc41543e6ea2ef7abd255ad41
+  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
+
+PODFILE CHECKSUM: 26f20402d301c3c5b3e7889792082e53eac94bc9
 
 COCOAPODS: 1.7.5
