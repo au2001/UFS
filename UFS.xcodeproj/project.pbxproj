@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0D0FF6B2230C4A8300877A78 /* OSXFUSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0FF6AD230C49B000877A78 /* OSXFUSE.framework */; };
 		0D0FF6B4230C4AF900877A78 /* FileSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B3230C4AF900877A78 /* FileSystem.swift */; };
-		0D0FF6B6230C4B3000877A78 /* NSError+POSIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */; };
+		0D0FF6B6230C4B3000877A78 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0FF6B5230C4B3000877A78 /* Errors.swift */; };
 		0D0FF6BD230C4F4200877A78 /* volicon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 0D0FF6BC230C4F4200877A78 /* volicon.icns */; };
 		0D197ABB230ECC5B00F3AEDC /* DriveStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D197ABA230ECC5B00F3AEDC /* DriveStorage.swift */; };
 		0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */; };
@@ -22,7 +22,7 @@
 		0D0FF6AD230C49B000877A78 /* OSXFUSE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSXFUSE.framework; path = ../../../../../Library/Frameworks/OSXFUSE.framework; sourceTree = "<group>"; };
 		0D0FF6AF230C4A5D00877A78 /* UFS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UFS-Bridging-Header.h"; sourceTree = "<group>"; };
 		0D0FF6B3230C4AF900877A78 /* FileSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystem.swift; sourceTree = "<group>"; };
-		0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+POSIX.swift"; sourceTree = "<group>"; };
+		0D0FF6B5230C4B3000877A78 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		0D0FF6BC230C4F4200877A78 /* volicon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = volicon.icns; path = UFS/volicon.icns; sourceTree = SOURCE_ROOT; };
 		0D197ABA230ECC5B00F3AEDC /* DriveStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveStorage.swift; sourceTree = "<group>"; };
 		0DB0EB68230C348300E81FC8 /* UFS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UFS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +94,7 @@
 				0DB0EB6B230C348300E81FC8 /* AppDelegate.swift */,
 				0D197ABA230ECC5B00F3AEDC /* DriveStorage.swift */,
 				0D0FF6B3230C4AF900877A78 /* FileSystem.swift */,
-				0D0FF6B5230C4B3000877A78 /* NSError+POSIX.swift */,
+				0D0FF6B5230C4B3000877A78 /* Errors.swift */,
 				0D0FF6BE230C4F5400877A78 /* Resources */,
 			);
 			path = UFS;
@@ -236,7 +236,7 @@
 			files = (
 				0D197ABB230ECC5B00F3AEDC /* DriveStorage.swift in Sources */,
 				0D0FF6B4230C4AF900877A78 /* FileSystem.swift in Sources */,
-				0D0FF6B6230C4B3000877A78 /* NSError+POSIX.swift in Sources */,
+				0D0FF6B6230C4B3000877A78 /* Errors.swift in Sources */,
 				0DB0EB6C230C348300E81FC8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

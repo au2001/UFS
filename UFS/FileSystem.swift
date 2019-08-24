@@ -1,5 +1,5 @@
 //
-//  UFS.swift
+//  FileSystem.swift
 //  UFS
 //
 //  Created by Aurélien Garnier on 20/08/2019.
@@ -7,13 +7,26 @@
 //
 
 import Foundation
+import GoogleAPIClientForREST
 
-final class UFS: NSObject {
+final class FileSystem: NSObject {
     
-    let rootPath: String
+    let rootPath = "/" // TODO
     
-    init(rootPath: String) {
-        self.rootPath = rootPath
+    let driveStorage: DriveStorage
+    var docsService: GTLRDocsService? {
+        get {
+            return self.driveStorage.getDocsService()
+        }
+    }
+    var driveService: GTLRDriveService? {
+        get {
+            return self.driveStorage.getDriveService()
+        }
+    }
+    
+    init(withStorage driveStorage: DriveStorage) {
+        self.driveStorage = driveStorage
     }
     
     // MARK: - Moving an Item

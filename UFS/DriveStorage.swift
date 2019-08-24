@@ -24,18 +24,34 @@ class DriveStorage {
     private var driveService: GTLRDriveService?
     private var currentAuthorizationFlow: OIDExternalUserAgentSession?
     
-    public init() {
+    public init(withCacheOfSize cacheSize: Int, atPath cachePath: String) {
         self.authorizer = GTMAppAuthFetcherAuthorization(fromKeychainForName: kUFSKeychainName)
         
         self.docsService = GTLRDocsService()
         self.docsService?.shouldFetchNextPages = true
         self.docsService?.isRetryEnabled = true
         self.docsService?.authorizer = self.authorizer
+        self.docsService?.fetcherService.configuration = .default
+        self.docsService?.fetcherService.configurationBlock = { (fetcher, config) in
+            config.urlCache = URLCache(
+                memoryCapacity: 0,
+                diskCapacity: cacheSize,
+                diskPath: cachePath)
+            config.requestCachePolicy = .returnCacheDataElseLoad
+        }
         
         self.driveService = GTLRDriveService()
         self.driveService?.shouldFetchNextPages = true
         self.driveService?.isRetryEnabled = true
         self.driveService?.authorizer = self.authorizer
+        self.driveService?.fetcherService.configuration = .default
+        self.driveService?.fetcherService.configurationBlock = { (fetcher, config) in
+            config.urlCache = URLCache(
+                memoryCapacity: 0,
+                diskCapacity: cacheSize,
+                diskPath: cachePath)
+            config.requestCachePolicy = .returnCacheDataElseLoad
+        }
     }
     
     func handle(url: URL) -> Bool {
@@ -105,13 +121,6 @@ class DriveStorage {
         return self.isSignedIn() ? self.driveService : nil
     }
     
-}
-
-enum UFSAuthError: Error {
-    
-    case stateNil
-    case docsServiceNil
-    case driveServiceNil
     
 }
 

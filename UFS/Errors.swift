@@ -1,5 +1,5 @@
 //
-//  NSError+POSIX.swift
+//  Errors.swift
 //  UFS
 //
 //  Created by Aurélien Garnier on 20/08/2019.
@@ -7,6 +7,23 @@
 //
 
 import Foundation
+
+enum UFSError: Error {
+    
+    case unauthorized
+    case unmounted
+    case closing
+    
+}
+
+enum UFSAuthError: Error {
+    
+    case unauthorized
+    case stateNil
+    case docsServiceNil
+    case driveServiceNil
+    
+}
 
 extension NSError {
     convenience init(posixErrorCode err: Int32) {
