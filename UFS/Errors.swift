@@ -13,6 +13,7 @@ enum UFSError: Error {
     case unauthorized
     case unmounted
     case closing
+    case noData
     
 }
 

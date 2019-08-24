@@ -39,6 +39,7 @@ class DriveStorage {
                 diskPath: cachePath)
             config.requestCachePolicy = .returnCacheDataElseLoad
         }
+        self.docsService?.setMainBundleIDRestrictionWithAPIKey(kGoogleAPIKey)
         
         self.driveService = GTLRDriveService()
         self.driveService?.shouldFetchNextPages = true
@@ -52,6 +53,7 @@ class DriveStorage {
                 diskPath: cachePath)
             config.requestCachePolicy = .returnCacheDataElseLoad
         }
+        self.driveService?.setMainBundleIDRestrictionWithAPIKey(kGoogleAPIKey)
     }
     
     func handle(url: URL) -> Bool {
@@ -121,6 +123,224 @@ class DriveStorage {
         return self.isSignedIn() ? self.driveService : nil
     }
     
+    fileprivate func createRoot() throws -> String {
+        guard self.isSignedIn() else {
+            print("Unauthorized")
+            throw UFSAuthError.unauthorized
+        }
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var dataOut: String?
+        var errorOut: Error?
+        
+        let file = GTLRDrive_File(json: [
+            "name": "UFS",
+            "mimeType": "application/vnd.google-apps.folder",
+            "properties": [
+                "UFS_Root": "true"
+            ],
+            "parents": []
+        ])
+        
+        let query = GTLRDriveQuery_FilesCreate.query(withObject: file, uploadParameters: nil)
+        query.fields = "id"
+        
+        _ = DispatchQueue.main.sync {
+            return self.driveService?.executeQuery(query) { (ticket, data, error) in
+                if let error = error {
+                    errorOut = error
+                    semaphore.signal()
+                    return
+                }
+                
+                guard let file = data as? GTLRDrive_File else {
+                    print("Unable to decode data")
+                    semaphore.signal()
+                    return
+                }
+                
+                dataOut = file.identifier
+                semaphore.signal()
+            }
+        }
+        
+        semaphore.wait()
+        
+        if let errorOut = errorOut {
+            print(errorOut)
+            throw errorOut
+        }
+        
+        if let dataOut = dataOut {
+            return dataOut
+        } else {
+            print("Unable to create root")
+            throw UFSError.noData
+        }
+    }
+    
+    public func root() throws -> String {
+        guard self.isSignedIn() else {
+            print("Unauthorized")
+            throw UFSAuthError.unauthorized
+        }
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var dataOut: String?
+        var errorOut: Error?
+        
+        let query = GTLRDriveQuery_FilesList.query()
+        query.q = "properties has {key='UFS_Root' and value='true'} and trashed=false"
+        query.fields = "files(id)"
+        query.pageSize = 1000
+        
+        _ = DispatchQueue.main.sync {
+            return self.driveService?.executeQuery(query) { (ticket, data, error) in
+                if let error = error {
+                    errorOut = error
+                    semaphore.signal()
+                    return
+                }
+                
+                guard let data = data as? GTLRDrive_FileList, let files = data.files else {
+                    print("Unable to decode data")
+                    semaphore.signal()
+                    return
+                }
+                
+                dataOut = files.first?.identifier
+                semaphore.signal()
+            }
+        }
+        
+        semaphore.wait()
+        
+        if let errorOut = errorOut {
+            print(errorOut)
+            throw errorOut
+        }
+        
+        if let dataOut = dataOut {
+            return dataOut
+        } else {
+            return try self.createRoot()
+        }
+    }
+    
+    public func id(forPath path: String) throws -> String {
+        return try self.id(forPath: path, in: self.root())
+    }
+    
+    public func id(forPath path: String, in parent: String) throws -> String {
+        guard self.isSignedIn() else {
+            print("Unauthorized")
+            throw UFSAuthError.unauthorized
+        }
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var dataOut: String?
+        var errorOut: Error?
+
+        let pathComponents = NSString(string: path).standardizingPath.split(separator: "/")
+
+        guard let name = pathComponents.first else {
+            return parent
+        }
+        
+        let nextPath = pathComponents.dropFirst().joined(separator: "/")
+        
+        let query = GTLRDriveQuery_FilesList.query()
+        query.q = "name='\(name)' and '\(parent)' in parents and trashed=false"
+        query.fields = "files(id)"
+        query.pageSize = 1000
+        
+        _ = DispatchQueue.main.sync {
+            return self.driveService?.executeQuery(query) { (ticket, data, error) in
+                if let error = error {
+                    errorOut = error
+                    semaphore.signal()
+                    return
+                }
+                
+                guard let data = data as? GTLRDrive_FileList, let files = data.files else {
+                    print("Unable to decode data")
+                    semaphore.signal()
+                    return
+                }
+                
+                dataOut = files.first?.identifier
+                semaphore.signal()
+            }
+        }
+        
+        semaphore.wait()
+        
+        if let errorOut = errorOut {
+            print(errorOut)
+            throw errorOut
+        }
+        
+        if let dataOut = dataOut {
+            return try self.id(forPath: nextPath, in: dataOut)
+        } else {
+            return try self.createRoot()
+        }
+    }
+    
+    public func propertiesOfItem(atPath path: String) throws -> [String: String] {
+        return [:] // TODO
+    }
+    
+    public func contentsOfDirectory(atPath path: String) throws -> [GTLRDrive_File] {
+        guard self.isSignedIn() else {
+            print("Unauthorized")
+            throw UFSAuthError.unauthorized
+        }
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var dataOut: [GTLRDrive_File]?
+        var errorOut: Error?
+        
+        let parent = try self.id(forPath: path)
+        
+        let query = GTLRDriveQuery_FilesList.query()
+        query.q = "'\(parent)' in parents and trashed=false"
+        query.fields = "files(id, name)"
+        query.pageSize = 1000
+        
+        _ = DispatchQueue.main.sync {
+            return self.driveService?.executeQuery(query) { (ticket, data, error) in
+                if let error = error {
+                    errorOut = error
+                    semaphore.signal()
+                    return
+                }
+
+                guard let data = data as? GTLRDrive_FileList, let files = data.files else {
+                    print("Unable to decode data")
+                    semaphore.signal()
+                    return
+                }
+
+                dataOut = files
+                semaphore.signal()
+            }
+        }
+        
+        semaphore.wait()
+        
+        if let errorOut = errorOut {
+            print(errorOut)
+            throw errorOut
+        }
+
+        if let dataOut = dataOut {
+            return dataOut
+        } else {
+            print("Unable to find directory \(path)")
+            throw UFSError.noData
+        }
+    }
     
 }
 
