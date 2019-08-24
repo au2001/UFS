@@ -1,6 +1,6 @@
 # Unlimited File System (UFS)
 
-The idea of this project comes from [Unlimited Disk Storage (UDS)](https://github.com/stewartmcgown/uds). It uses [OSXFUSE](https://github.com/osxfuse/osxfuse).
+The idea of this project comes from [Unlimited Drive Storage (UDS)](https://github.com/stewartmcgown/uds). It uses [OSXFUSE](https://github.com/osxfuse/osxfuse).
 
 ---
 
