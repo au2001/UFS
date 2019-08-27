@@ -17,7 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var menu: NSMenu!
     private var statusItem: NSStatusItem?
     
-    private var driveStorage: DriveStorage?
+    private var driveHandler: DriveHandler?
+    private var driveBridge: DriveBridge?
     
     private var notificationObservers: [NSObjectProtocol] = []
     private var mountNotificationCallbacks: [(Error?) -> ()] = []
@@ -83,7 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func application(_ application: NSApplication, open urls: [URL]) {
         urls.forEach { url in
-            if self.driveStorage?.handle(url: url) ?? false {
+            if self.driveHandler?.handle(url: url) ?? false {
                 return
             }
         }
@@ -156,16 +157,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     public func signIn(callback: ((Error?) -> ())?) {
-        if self.driveStorage == nil {
+        if self.driveHandler == nil {
             let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
             let cacheName = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String
             let cachePath = (cachesDirectory ?? URL(fileURLWithPath: ".", isDirectory: true)).appendingPathComponent(cacheName, isDirectory: true)
-            self.driveStorage = DriveStorage(withCacheOfSize: 200 * 1024 * 1024, atPath: cachePath.absoluteString)
+            self.driveHandler = DriveHandler(withCacheOfSize: 200 * 1024 * 1024, atPath: cachePath.absoluteString)
         }
         
-        let driveStorage = self.driveStorage!
+        let driveHandler = self.driveHandler!
         
-        driveStorage.signIn { error in
+        driveHandler.signIn { error in
             if let error = error {
                 callback?(error)
                 return
@@ -182,7 +183,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
             
-            self.driveStorage?.signOut()
+            self.driveHandler?.signOut()
             callback?(nil)
         }
     }
@@ -193,7 +194,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         
-        guard let driveStorage = self.driveStorage, self.driveStorage?.isSignedIn() ?? false else {
+        guard let driveHandler = self.driveHandler, self.driveHandler?.isSignedIn() ?? false else {
             self.signIn { error in
                 if let error = error {
                     callback?(error)
@@ -204,9 +205,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
             return
         }
+        
+        if self.driveBridge == nil {
+            self.driveBridge = DriveBridge(forDriveHandler: driveHandler)
+        }
+        
+        let driveBridge = self.driveBridge!
 
         if self.fileSystem == nil {
-            self.fileSystem = FileSystem(withStorage: driveStorage)
+            self.fileSystem = FileSystem(withBridge: driveBridge)
         }
 
         if self.userFileSystem == nil {

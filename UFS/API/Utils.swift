@@ -23,13 +23,13 @@ class Utils {
         return name
     }
     
-    public static func attributes(fromProperties properties: [String: String]) -> [FileAttributeKey: Any] {
+    public static func attributes(fromProperties properties: GTLRDrive_File_Properties) -> [FileAttributeKey: Any] {
         var attributes: [FileAttributeKey: Any] = [:]
         
-        properties.forEach { (key, value) in
+        properties.additionalProperties().forEach { (key, value) in
             switch(key.lowercased()) {
             case "type":
-                switch(value.lowercased()) {
+                switch((value as? String)?.lowercased()) {
                 case "directory":
                     attributes[FileAttributeKey.type] = FileAttributeType.typeDirectory
                 case "regular":
@@ -49,20 +49,20 @@ class Utils {
                 }
 
             case "size":
-                attributes[FileAttributeKey.size] = Int(value)
+                attributes[FileAttributeKey.size] = value as? Int
                 
             case "modification_date":
-                if let timeInterval = TimeInterval(value) {
+                if let timeInterval = value as? TimeInterval {
                     attributes[FileAttributeKey.modificationDate] = Date(timeIntervalSince1970: timeInterval)
                 }
                 
             case "creation_date":
-                if let timeInterval = TimeInterval(value) {
+                if let timeInterval = value as? TimeInterval {
                     attributes[FileAttributeKey.creationDate] = Date(timeIntervalSince1970: timeInterval)
                 }
 
             case "extension_hidden":
-                attributes[FileAttributeKey.extensionHidden] = Bool(value)
+                attributes[FileAttributeKey.extensionHidden] = value as? Bool
 
             default:
                 break
