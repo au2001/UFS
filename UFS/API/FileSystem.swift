@@ -25,7 +25,7 @@ final class FileSystem: NSObject {
 
             return contents
         } catch let e {
-            print("Error: contentsOfDirectory(atPath: \"\(path!)\") -> \(e)")
+            print("Error: contentsOfDirectory(atPath: \"\(path!)\") -> \(e.localizedDescription)")
             throw e
         }
     }
@@ -44,7 +44,7 @@ final class FileSystem: NSObject {
 
             return attributes
         } catch let e {
-            print("Error: attributesOfItem(atPath: \"\(path!)\") -> \(e)")
+            print("Error: attributesOfItem(atPath: \"\(path!)\") -> \(e.localizedDescription)")
             throw e
         }
     }
@@ -63,14 +63,56 @@ final class FileSystem: NSObject {
         return attributes
     }
     
-    override func setAttributes(_ attributes: [AnyHashable : Any]!, ofItemAtPath path: String!, userData: Any!) throws {
-//        *   <li>NSFileSize
-//        *   <li>NSFileModificationDate
-//        *   <li>NSFileCreationDate                  (if supports extended dates)
-//        *   <li>kGMUserFileSystemFileBackupDateKey  (if supports extended dates)
-//        *   <li>kGMUserFileSystemFileChangeDateKey
-//        *   <li>kGMUserFileSystemFileAccessDateKey
-//        *   <li>kGMUserFileSystemFileFlagsKey
+    override func setAttributes(_ attributes: [AnyHashable: Any]!, ofItemAtPath path: String!, userData: Any!) throws {
+        do {
+            guard let attributes = attributes as? [FileAttributeKey : Any] else {
+                throw NSError(posixErrorCode: EINVAL)
+            }
+            
+            let properties = Utils.properties(fromAttributes: attributes)
+            
+            try self.driveBridge.setProperties(properties, ofItemAtPath: path)
+        } catch let e {
+            print("Error: setAttributes(\(attributes!), ofItemAtPath: \"\(path!)\") -> \(e.localizedDescription)")
+            throw e
+        }
+    }
+    
+    override func createDirectory(atPath path: String!, attributes: [AnyHashable : Any]! = [:]) throws {
+        do {
+            guard let attributes = attributes as? [FileAttributeKey : Any] else {
+                throw NSError(posixErrorCode: EINVAL)
+            }
+            
+            let properties = Utils.properties(fromAttributes: attributes)
+            if properties.json?["type"] == nil {
+                properties.json?["type"] = "directory"
+            }
+            
+            _ = try self.driveBridge.createDirectory(atPath: path, properties: properties)
+        } catch let e {
+            print("Error: createDirectory(atPath: \(path!), attributes: \"\(attributes!)\") -> \(e.localizedDescription)")
+            throw e
+        }
+    }
+    
+    override func createFile(atPath path: String!, attributes: [AnyHashable : Any]! = [:], flags: Int32, userData: AutoreleasingUnsafeMutablePointer<AnyObject?>!) throws {
+        do {
+            guard let attributes = attributes as? [FileAttributeKey : Any] else {
+                throw NSError(posixErrorCode: EINVAL)
+            }
+            
+            let properties = Utils.properties(fromAttributes: attributes)
+            if properties.json?["type"] == nil {
+               properties.json?["type"] = "regular"
+            }
+            properties.json?["flags"] = flags
+            
+            _ = try self.driveBridge.createFile(atPath: path, properties: properties)
+        } catch let e {
+            print("Error: createFile(atPath: \(path!), attributes: \"\(attributes!)\", flags: \(flags)) -> \(e.localizedDescription)")
+            throw e
+        }
     }
     
 }

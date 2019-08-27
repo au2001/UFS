@@ -42,13 +42,11 @@ class DriveBridge {
     }
     
     fileprivate func createRoot() throws -> String {
-        let json = GTLRDrive_File(json: [
-            "name": "UFS",
-            "mimeType": "application/vnd.google-apps.folder",
-            "properties": [
-                "UFS": "root"
-            ],
-            "parents": []
+        let json = GTLRDrive_File(json: [:])
+        json.name = "UFS"
+        json.mimeType = "application/vnd.google-apps.folder"
+        json.properties = GTLRDrive_File_Properties(json: [
+            "UFS": "root"
         ])
         
         let query = GTLRDriveQuery_FilesCreate.query(withObject: json, uploadParameters: nil)
@@ -56,12 +54,11 @@ class DriveBridge {
         
         let file = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_File.self)
         
-        try self.hide(file: file)
-        
-        if let identifier = file.identifier {
+        if let file = file, let identifier = file.identifier {
+            try self.hide(file: file)
             return identifier
         } else {
-            throw UFSError.noData
+            throw NSError(posixErrorCode: EAGAIN)
         }
     }
     
@@ -73,7 +70,7 @@ class DriveBridge {
         
         let fileList = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_FileList.self)
         
-        if let identifier = fileList.files?.first?.identifier {
+        if let identifier = fileList?.files?.first?.identifier {
             return identifier
         } else {
             return try self.createRoot()
@@ -90,16 +87,16 @@ class DriveBridge {
         let nextPath = pathComponents.dropFirst().joined(separator: "/")
         
         let query = GTLRDriveQuery_FilesList.query()
-        query.q = "name='\(name)' and '\(parent)' in parents and properties has {key='UFS' and value='directory'} and trashed=false"
+        query.q = "name='\(name)' and '\(parent)' in parents and (properties has {key='UFS' and value='directory'} or properties has {key='UFS' and value='file'}) and trashed=false"
         query.fields = "files(id)"
         query.pageSize = 1000
         
         let fileList = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_FileList.self)
         
-        if let identifier = fileList.files?.first?.identifier {
+        if let identifier = fileList?.files?.first?.identifier {
             return try self.id(forPath: nextPath, in: identifier)
         } else {
-            throw UFSError.noData
+            throw NSError(posixErrorCode: ENOENT)
         }
     }
     
@@ -117,10 +114,10 @@ class DriveBridge {
         
         let file = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_File.self)
         
-        if let properties = file.properties {
+        if let properties = file?.properties {
             return properties
         } else {
-            throw UFSError.noData
+            throw NSError(posixErrorCode: ENOENT)
         }
     }
     
@@ -134,11 +131,68 @@ class DriveBridge {
         
         let fileList = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_FileList.self)
         
-        if let files = fileList.files {
+        if let files = fileList?.files {
             return files
         } else {
-            throw UFSError.noData
+            throw NSError(posixErrorCode: EAGAIN)
+        }
+    }
+    
+    public func setProperties(_ properties: GTLRDrive_File_Properties, ofItemAtPath path: String) throws {
+        let identifier = try self.id(forPath: path)
+        let json = GTLRDrive_File(json: [:])
+        json.properties = properties
+        
+        let query = GTLRDriveQuery_FilesUpdate.query(withObject: json, fileId: identifier, uploadParameters: nil)
+        
+        _ = try self.driveHandler.execute(query: query)
+    }
+    
+    public func createDirectory(atPath path: String, properties: GTLRDrive_File_Properties) throws -> String {
+        let parent = try self.id(forPath: NSString(string: path).deletingLastPathComponent)
+        
+        properties.json?["UFS"] = "directory"
+
+        let json = GTLRDrive_File(json: [:])
+        json.name = NSString(string: path).lastPathComponent
+        json.properties = properties
+        json.mimeType = "application/vnd.google-apps.folder"
+        json.parents = [parent]
+        
+        let query = GTLRDriveQuery_FilesCreate.query(withObject: json, uploadParameters: nil)
+        query.fields = "id"
+        
+        let file = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_File.self)
+        
+        if let identifier = file?.identifier {
+            return identifier
+        } else {
+            throw NSError(posixErrorCode: EAGAIN)
+        }
+    }
+    
+    public func createFile(atPath path: String, properties: GTLRDrive_File_Properties) throws -> String {
+        let parent = try self.id(forPath: NSString(string: path).deletingLastPathComponent)
+        
+        properties.json?["UFS"] = "file"
+        
+        let json = GTLRDrive_File(json: [:])
+        json.name = NSString(string: path).lastPathComponent
+        json.properties = properties
+        json.mimeType = "application/vnd.google-apps.document"
+        json.parents = [parent]
+        
+        let query = GTLRDriveQuery_FilesCreate.query(withObject: json, uploadParameters: nil)
+        query.fields = "id"
+        
+        let file = try self.driveHandler.execute(query: query, withOutputType: GTLRDrive_File.self)
+        
+        if let identifier = file?.identifier {
+            return identifier
+        } else {
+            throw NSError(posixErrorCode: EAGAIN)
         }
     }
     
 }
+

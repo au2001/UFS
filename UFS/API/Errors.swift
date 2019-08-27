@@ -8,21 +8,13 @@
 
 import Foundation
 
-enum UFSError: Error {
-    
-    case unauthorized
-    case unmounted
-    case closing
-    case noData
-    
-}
-
 enum UFSAuthError: Error {
     
     case unauthorized
     case stateNil
     case docsServiceNil
     case driveServiceNil
+    case closed
     
 }
 

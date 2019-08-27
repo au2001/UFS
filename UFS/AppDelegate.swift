@@ -67,12 +67,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.notificationObservers.removeAll()
             
             self.mountNotificationCallbacks.forEach { callback in
-                callback(UFSError.closing)
+                callback(UFSAuthError.closed)
             }
             self.mountNotificationCallbacks.removeAll()
             
             self.unmountNotificationCallbacks.forEach { callback in
-                callback(UFSError.closing)
+                callback(UFSAuthError.closed)
             }
             self.unmountNotificationCallbacks.removeAll()
             
@@ -242,7 +242,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         guard let userFileSystem = self.userFileSystem else {
-            callback?(UFSError.unmounted)
+            callback?(UFSAuthError.closed)
             return
         }
         

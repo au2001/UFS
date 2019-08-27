@@ -72,4 +72,53 @@ class Utils {
         return attributes
     }
     
+    public static func properties(fromAttributes attributes: [FileAttributeKey: Any]) -> GTLRDrive_File_Properties {
+        var properties: [AnyHashable: Any] = [:]
+        
+        attributes.forEach { (key, value) in
+            switch(key) {
+            case .type:
+                switch(value as? FileAttributeType) {
+                case FileAttributeType.typeDirectory:
+                    properties["type"] = "directory"
+                case FileAttributeType.typeRegular:
+                    properties["type"] = "regular"
+                case FileAttributeType.typeSymbolicLink:
+                    properties["type"] = "symbolic_link"
+                case FileAttributeType.typeSocket:
+                    properties["type"] = "socket"
+                case FileAttributeType.typeCharacterSpecial:
+                    properties["type"] = "character_special"
+                case FileAttributeType.typeBlockSpecial:
+                    properties["type"] = "block_special"
+                case FileAttributeType.typeUnknown:
+                    properties["type"] = "unknown"
+                default:
+                    break
+                }
+                
+            case .size:
+                properties["size"] = value as? Int
+                
+            case .modificationDate:
+                if let date = value as? Date {
+                    properties["modification_date"] = date.timeIntervalSince1970
+                }
+                
+            case .creationDate:
+                if let date = value as? Date {
+                    properties["creation_date"] = date.timeIntervalSince1970
+                }
+                
+            case .extensionHidden:
+                properties["extension_hidden"] = value as? Bool
+                
+            default:
+                break
+            }
+        }
+        
+        return GTLRDrive_File_Properties(json: properties)
+    }
+    
 }

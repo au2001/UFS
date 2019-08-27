@@ -151,12 +151,8 @@ class DriveHandler {
         return dataOut
     }
     
-    public func execute<T>(query: GTLRDriveQuery, withOutputType outputType: T.Type) throws -> T {
-        if let dataOut = try self.execute(query: query) as? T {
-            return dataOut
-        } else {
-            throw UFSError.noData
-        }
+    public func execute<T>(query: GTLRDriveQuery, withOutputType outputType: T.Type) throws -> T? {
+        return try self.execute(query: query) as? T
     }
     
 }
