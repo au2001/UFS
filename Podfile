@@ -7,8 +7,8 @@ target 'UFS' do
 
   # Pods for UFS
 
-  pod 'GoogleAPIClientForREST/Docs'
   pod 'GoogleAPIClientForREST/Drive'
+  pod 'GoogleAPIClientForREST/Sheets'
 
   pod 'GTMAppAuth'
 end

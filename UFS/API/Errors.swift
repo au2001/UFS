@@ -12,7 +12,7 @@ enum UFSAuthError: Error {
     
     case unauthorized
     case stateNil
-    case docsServiceNil
+    case sheetsServiceNil
     case driveServiceNil
     case closed
     
