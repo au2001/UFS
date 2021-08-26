@@ -2,6 +2,8 @@
 
 The idea of this project comes from [Unlimited Drive Storage (UDS)](https://github.com/stewartmcgown/uds). It uses [OSXFUSE](https://github.com/osxfuse/osxfuse).
 
+## *Update as of June 1st, 2021: Google has patched this work-around by making Google Docs, Sheets, Slides, Forms, Jamboard, and Drawings take up space in your Google Drive quota, making this project useless. It is thus discontinued.*
+
 ---
 
 # Introduction
